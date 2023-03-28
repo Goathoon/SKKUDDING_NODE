@@ -19,6 +19,9 @@ app.use(express.json());
 app.get("/restaurants", getRestaurants); //당연히 () 실행하면 안됨
 app.get("/restaurants/:restname", getRestaurantsByName);
 
+app.use((req, res, next) => {
+  res.send("ERROR: 404 Not Found Error");
+});
 app.listen(port, () => {
   console.log(`server is running on ${port}`);
 });
