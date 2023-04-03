@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Restaurants = void 0;
-exports.Restaurants = [
+export const Restaurants = [
     {
         name: "봉수육",
         address: "경기 수원시 장안구 율전로108번길 11 1층",

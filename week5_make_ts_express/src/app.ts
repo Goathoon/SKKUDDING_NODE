@@ -5,12 +5,7 @@ const app: e.Express = e();
 
 const port: number = 3001;
 
-const modulePath: string = path.join(
-  __dirname,
-  "restaurant",
-  "restaurant.router"
-);
-const router = require(modulePath);
+import * as router from "./restaurant/restaurant.router.js";
 
 //초기 미들웨어 설정
 app.use((req: e.Request, res: e.Response, next) => {
@@ -18,8 +13,8 @@ app.use((req: e.Request, res: e.Response, next) => {
   next();
 });
 
-//json읽을 수 있는 미들웨어 추가
-// app.use(express.json());
+// json읽을 수 있는 미들웨어 추가
+app.use(e.json());
 
 app.get("/restaurants", router.getRestaurants); //당연히 () 실행하면 안됨
 app.get("/restaurants/:restname", router.getRestaurantsByName);

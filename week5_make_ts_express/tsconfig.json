@@ -18,5 +18,5 @@
     "strictNullChecks": true,
     "strictFunctionTypes": true
   },
-  "exclude": ["node_modules", "test", "dist", "**/*spec.ts", "src/restaurant/*"]
+  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
 }

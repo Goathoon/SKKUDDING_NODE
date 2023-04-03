@@ -1,4 +1,4 @@
-import { Restaurants, Restaurant } from "./restaurant.model";
+import { Restaurants, Restaurant } from "./restaurant.model.js";
 import { Response, Request } from "express";
 
 // ------- 라우트 내 콜백함수 정의 -------- //
@@ -48,7 +48,7 @@ const createRestaurant = (req: Request, res: Response) => {
 
 const deleteRestaurantByName = (req: Request, res: Response) => {
   try {
-    const deleteName: string = req.params["restname"];
+    const deleteName: string = req.params.restname;
     for (var i = 0; i < Restaurants.length; i++) {
       if (deleteName === Restaurants[i]["name"]) {
         try {
@@ -68,7 +68,7 @@ const deleteRestaurantByName = (req: Request, res: Response) => {
 
 const updateRestaurantByName = (req: Request, res: Response) => {
   try {
-    const changeName: string = req.params["restname"];
+    const changeName: string = req.params.restname;
     const changeInfo: Restaurant = req.body;
     for (var i = 0; i < Restaurants.length; i++) {
       if (changeName === Restaurants[i]["name"]) {
