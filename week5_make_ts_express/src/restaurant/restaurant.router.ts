@@ -1,49 +1,43 @@
-const fs = require("fs");
-const readBuffer = fs.readFileSync(
-  "./src/restaurant/data/restaurant.json", //작업 디렉토리에서 상대경로를 지정해줘야함.
-  (encoding = "utf8")
-); //readFile에서 콜백함수로 동기처리 할 수는 있음
-const jsonBuffer = JSON.parse(readBuffer);
+import { Restaurants, Restaurant } from "./restaurant.model";
+import { Response, Request } from "express";
 
 // ------- 라우트 내 콜백함수 정의 -------- //
-const getRestaurants = (req, res) => {
+const getRestaurants = (req: Request, res: Response): void => {
   try {
-    res.send(jsonBuffer);
+    res.send(Restaurants);
   } catch (error) {
     res.send("cannot found route");
   }
 };
 
-const getRestaurantsByName = (req, res) => {
+const getRestaurantsByName = (req: Request, res: Response) => {
   try {
     const param = req.params;
-    rest = param.restname;
-    for (var i = 0; i < jsonBuffer["restaurants"].length; i++) {
-      if (jsonBuffer["restaurants"][i]["name"] === rest) {
-        return res.status(200).send(jsonBuffer["restaurants"][i]);
+    const rest: string = param.restname;
+    for (var i = 0; i < Restaurants.length; i++) {
+      if (Restaurants[i]["name"] === rest) {
+        return res.status(200).send(Restaurants[i]);
       }
     }
     throw new Error();
-  } catch (error) {
+  } catch (error: any) {
     res.status(404).send({
       error: "해당 맛집 정보가 존재하지 않습니다.",
     });
   }
 };
 
-const createRestaurant = (req, res) => {
+const createRestaurant = (req: Request, res: Response) => {
   try {
-    const body = req.body;
-    for (var i = 0; i < jsonBuffer["restaurants"].length; i++) {
-      if (body["name"] === jsonBuffer["restaurants"][i]["name"]) {
+    const body: Restaurant = req.body;
+    for (var i = 0; i < Restaurants.length; i++) {
+      if (body["name"] === Restaurants[i]["name"]) {
         throw new Error();
       }
     }
-    jsonBuffer["restaurants"].push(body);
-    jsonWrite = JSON.stringify(jsonBuffer);
     try {
-      fs.writeFileSync("./src/restaurant/data/restaurant.json", jsonWrite);
-    } catch (error) {
+      Restaurants.push(body);
+    } catch (error: any) {
       console.log(error.message);
     }
     res.send(body);
@@ -52,17 +46,13 @@ const createRestaurant = (req, res) => {
   }
 };
 
-const deleteRestaurantByName = (req, res) => {
+const deleteRestaurantByName = (req: Request, res: Response) => {
   try {
-    deleteParam = req.params;
-    deleteName = deleteParam["restname"];
-    for (var i = 0; i < jsonBuffer["restaurants"].length; i++) {
-      if (deleteName === jsonBuffer["restaurants"][i]["name"]) {
+    const deleteName: string = req.params["restname"];
+    for (var i = 0; i < Restaurants.length; i++) {
+      if (deleteName === Restaurants[i]["name"]) {
         try {
-          return res.status(200).send(jsonBuffer["restaurants"][i]);
-          jsonBuffer["restaurants"].splice(i, 1);
-          jsonWrite = JSON.stringify(jsonBuffer);
-          fs.writeFileSync("./src/restaurant/data/restaurant.json", jsonWrite);
+          return res.status(200).send(Restaurants[i]);
         } catch (error) {
           return res.status(404).send("cannot write");
         }
@@ -76,16 +66,13 @@ const deleteRestaurantByName = (req, res) => {
   }
 };
 
-const updateRestaurantByName = (req, res) => {
+const updateRestaurantByName = (req: Request, res: Response) => {
   try {
-    changeParam = req.params;
-    changeName = changeParam["restname"];
-    changeInfo = req.body;
-    for (var i = 0; i < jsonBuffer["restaurants"].length; i++) {
-      if (changeName === jsonBuffer["restaurants"][i]["name"]) {
-        jsonBuffer["restaurants"][i] = changeInfo;
-        writeJson = JSON.stringify(jsonBuffer);
-        fs.writeFileSync("./src/restaurant/data/restaurant.json", writeJson);
+    const changeName: string = req.params["restname"];
+    const changeInfo: Restaurant = req.body;
+    for (var i = 0; i < Restaurants.length; i++) {
+      if (changeName === Restaurants[i]["name"]) {
+        Restaurants[i] = changeInfo;
         return res.status(200).send(changeInfo);
       }
     }
@@ -94,7 +81,7 @@ const updateRestaurantByName = (req, res) => {
     res.status(404).send({ error: "해당 맛집 정보가 존재하지 않습니다." });
   }
 };
-module.exports = {
+export {
   getRestaurants,
   getRestaurantsByName,
   createRestaurant,

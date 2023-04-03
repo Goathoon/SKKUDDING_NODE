@@ -13,7 +13,7 @@
     "outDir": "./dist",
     "baseUrl": "./src",
     "incremental": true,
-
+    "types": ["express"],
     "noImplicitAny": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true

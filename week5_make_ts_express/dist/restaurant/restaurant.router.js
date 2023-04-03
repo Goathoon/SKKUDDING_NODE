@@ -1,22 +1,23 @@
 "use strict";
-const fs = require("fs");
-const readBuffer = fs.readFileSync("./src/restaurant/data/restaurant.json", (encoding = "utf8"));
-const jsonBuffer = JSON.parse(readBuffer);
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.updateRestaurantByName = exports.deleteRestaurantByName = exports.createRestaurant = exports.getRestaurantsByName = exports.getRestaurants = void 0;
+const restaurant_model_1 = require("./restaurant.model");
 const getRestaurants = (req, res) => {
     try {
-        res.send(jsonBuffer);
+        res.send(restaurant_model_1.Restaurants);
     }
     catch (error) {
         res.send("cannot found route");
     }
 };
+exports.getRestaurants = getRestaurants;
 const getRestaurantsByName = (req, res) => {
     try {
         const param = req.params;
-        rest = param.restname;
-        for (var i = 0; i < jsonBuffer["restaurants"].length; i++) {
-            if (jsonBuffer["restaurants"][i]["name"] === rest) {
-                return res.status(200).send(jsonBuffer["restaurants"][i]);
+        const rest = param.restname;
+        for (var i = 0; i < restaurant_model_1.Restaurants.length; i++) {
+            if (restaurant_model_1.Restaurants[i]["name"] === rest) {
+                return res.status(200).send(restaurant_model_1.Restaurants[i]);
             }
         }
         throw new Error();
@@ -27,18 +28,17 @@ const getRestaurantsByName = (req, res) => {
         });
     }
 };
+exports.getRestaurantsByName = getRestaurantsByName;
 const createRestaurant = (req, res) => {
     try {
         const body = req.body;
-        for (var i = 0; i < jsonBuffer["restaurants"].length; i++) {
-            if (body["name"] === jsonBuffer["restaurants"][i]["name"]) {
+        for (var i = 0; i < restaurant_model_1.Restaurants.length; i++) {
+            if (body["name"] === restaurant_model_1.Restaurants[i]["name"]) {
                 throw new Error();
             }
         }
-        jsonBuffer["restaurants"].push(body);
-        jsonWrite = JSON.stringify(jsonBuffer);
         try {
-            fs.writeFileSync("./src/restaurant/data/restaurant.json", jsonWrite);
+            restaurant_model_1.Restaurants.push(body);
         }
         catch (error) {
             console.log(error.message);
@@ -49,17 +49,14 @@ const createRestaurant = (req, res) => {
         res.status(404).send({ error: "이미 해당 맛집 정보가 존재합니다" });
     }
 };
+exports.createRestaurant = createRestaurant;
 const deleteRestaurantByName = (req, res) => {
     try {
-        deleteParam = req.params;
-        deleteName = deleteParam["restname"];
-        for (var i = 0; i < jsonBuffer["restaurants"].length; i++) {
-            if (deleteName === jsonBuffer["restaurants"][i]["name"]) {
+        const deleteName = req.params["restname"];
+        for (var i = 0; i < restaurant_model_1.Restaurants.length; i++) {
+            if (deleteName === restaurant_model_1.Restaurants[i]["name"]) {
                 try {
-                    return res.status(200).send(jsonBuffer["restaurants"][i]);
-                    jsonBuffer["restaurants"].splice(i, 1);
-                    jsonWrite = JSON.stringify(jsonBuffer);
-                    fs.writeFileSync("./src/restaurant/data/restaurant.json", jsonWrite);
+                    return res.status(200).send(restaurant_model_1.Restaurants[i]);
                 }
                 catch (error) {
                     return res.status(404).send("cannot write");
@@ -74,16 +71,14 @@ const deleteRestaurantByName = (req, res) => {
             .send({ error: "해당 맛집 정보가 존재하지 않습니다." });
     }
 };
+exports.deleteRestaurantByName = deleteRestaurantByName;
 const updateRestaurantByName = (req, res) => {
     try {
-        changeParam = req.params;
-        changeName = changeParam["restname"];
-        changeInfo = req.body;
-        for (var i = 0; i < jsonBuffer["restaurants"].length; i++) {
-            if (changeName === jsonBuffer["restaurants"][i]["name"]) {
-                jsonBuffer["restaurants"][i] = changeInfo;
-                writeJson = JSON.stringify(jsonBuffer);
-                fs.writeFileSync("./src/restaurant/data/restaurant.json", writeJson);
+        const changeName = req.params["restname"];
+        const changeInfo = req.body;
+        for (var i = 0; i < restaurant_model_1.Restaurants.length; i++) {
+            if (changeName === restaurant_model_1.Restaurants[i]["name"]) {
+                restaurant_model_1.Restaurants[i] = changeInfo;
                 return res.status(200).send(changeInfo);
             }
         }
@@ -93,11 +88,5 @@ const updateRestaurantByName = (req, res) => {
         res.status(404).send({ error: "해당 맛집 정보가 존재하지 않습니다." });
     }
 };
-module.exports = {
-    getRestaurants,
-    getRestaurantsByName,
-    createRestaurant,
-    deleteRestaurantByName,
-    updateRestaurantByName,
-};
+exports.updateRestaurantByName = updateRestaurantByName;
 //# sourceMappingURL=restaurant.router.js.map

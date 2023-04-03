@@ -1,8 +1,7 @@
-declare const fs: any;
-declare const readBuffer: any;
-declare const jsonBuffer: any;
-declare const getRestaurants: (req: any, res: any) => void;
-declare const getRestaurantsByName: (req: any, res: any) => any;
-declare const createRestaurant: (req: any, res: any) => void;
-declare const deleteRestaurantByName: (req: any, res: any) => any;
-declare const updateRestaurantByName: (req: any, res: any) => any;
+import { Response, Request } from "express";
+declare const getRestaurants: (req: Request, res: Response) => void;
+declare const getRestaurantsByName: (req: Request, res: Response) => Response<any, Record<string, any>> | undefined;
+declare const createRestaurant: (req: Request, res: Response) => void;
+declare const deleteRestaurantByName: (req: Request, res: Response) => Response<any, Record<string, any>>;
+declare const updateRestaurantByName: (req: Request, res: Response) => Response<any, Record<string, any>> | undefined;
+export { getRestaurants, getRestaurantsByName, createRestaurant, deleteRestaurantByName, updateRestaurantByName, };
