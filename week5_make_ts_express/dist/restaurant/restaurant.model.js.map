@@ -1,0 +1,1 @@
+{"version":3,"file":"restaurant.model.js","sourceRoot":"","sources":["../../src/restaurant/restaurant.model.ts"],"names":[],"mappings":"AAIA,MAAM,CAAC,MAAM,WAAW,GAAiB;IACvC;QACE,IAAI,EAAE,KAAK;QACX,OAAO,EAAE,2BAA2B;QACpC,KAAK,EAAE,gBAAgB;KACxB;IACD;QACE,IAAI,EAAE,MAAM;QACZ,OAAO,EAAE,4BAA4B;QACrC,KAAK,EAAE,gBAAgB;KACxB;CACF,CAAC"}
