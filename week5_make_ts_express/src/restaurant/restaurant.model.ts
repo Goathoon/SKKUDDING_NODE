@@ -1,3 +1,8 @@
+/*
+ **  두가지 export를 해야만 했다.
+ **  JSON형식을 위한 Restaurant 배열,
+ **  Restaurants 배열에 추가하기 위한 Restaurant 인터페이스
+ */
 export interface Restaurant {
   name: string;
   address: string;
