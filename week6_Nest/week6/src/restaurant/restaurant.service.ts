@@ -17,70 +17,74 @@ export class RestaurantService {
       },
     });
   }
-  // private restaurants: RestaurantDto[];
-  // constructor() {
-  //   this.restaurants = Restaurants;
-  // };
-  // getRestaurants(){
-  //   try{
-  //     return this.restaurants;
-  //   }catch(error){
-  //     console.log(error.message);
-  //   }
-  // };
 
-  // getRestaurantsByName (name:string): RestaurantDto{
-  //   try {
-  //     for (var i = 0; i < this.restaurants.length; i++) {
-  //       if (this.restaurants[i]["name"] === name) {
-  //         return this.restaurants[i];
-  //       }
-  //     }
-  //     throw new Error("no such restaurant");
-  //   } catch (error: any) {
-  //     console.log(error.message);
-  //   };
-  // };
+  async getRestaurantsByName(name: string) {
+    return await this.prisma.restaurant.findUnique({
+      where: {
+        name: name,
+      },
+      select: {
+        name: true,
+        address: true,
+        phone: true,
+      },
+    });
+  }
 
-  // createRestaurant(restaurant:RestaurantDto){
-  //   try {
-  //     for (var i = 0; i < Restaurants.length; i++) {
-  //       if (restaurant["name"] === Restaurants[i]["name"]) {
-  //         throw new Error("it is duplicate");
-  //       }
-  //     }
-  //     try {
-  //       this.restaurants.push(restaurant);
-  //       return this.restaurants;
-  //     } catch (error: any) {
-  //       console.log(error.message);
-  //     }
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // };
+  async createRestaurant(data: any) {
+    try {
+      const restaurants = await this.getAllRestaurants();
+      for (var i = 0; i < restaurants.length; i++) {
+        if (data['name'] === restaurants[i]['name']) {
+          throw new Error('it is duplicate');
+        }
+      }
+      console.log(data);
+      await this.prisma.restaurant.create({ data });
+      return true;
+    } catch (error) {
+      console.log(error.message);
+      return false;
+    }
+  }
 
-  // deleteRestaurantByName (name:string){
-  //   try {
-  //     const result = this.restaurants.filter(restaurant=>restaurant["name"] !== name);
-  //     return result;
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // };
+  async deleteRestaurantByName(name: string) {
+    try {
+      await this.prisma.restaurant.delete({
+        where: {
+          name: name,
+        },
+      });
+      return true;
+    } catch (error) {
+      console.log(error.message);
+      return false;
+    }
+  }
 
-  // updateRestaurantByName(changeName:string , changeInfo:RestaurantDto) {
-  //   try {
-
-  //     for (var i = 0; i < this.restaurants.length; i++) {
-  //       if (changeName === this.restaurants[i]["name"]) {
-  //         Restaurants[i] = changeInfo;
-  //         return this.restaurants;
-  //       }
-  //     }
-  //     throw new Error();
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // };
+  async updateRestaurantByName(name: string, data: any) {
+    try {
+      // for (var i = 0; i < this.restaurants.length; i++) {
+      //   if (changeName === this.restaurants[i]["name"]) {
+      //     Restaurants[i] = changeInfo;
+      //     return this.restaurants;
+      //   }
+      const restaurants = await this.getAllRestaurants();
+      for (var i = 0; i < restaurants.length; i++) {
+        if (name === restaurants[i]['name']) {
+          await this.prisma.restaurant.update({
+            where: {
+              name: name,
+            },
+            data: data,
+          });
+          return true;
+        }
+      }
+      throw new Error('there is no restaurant which will be updated');
+    } catch (error) {
+      console.log(error.message);
+      return false;
+    }
+  }
 }
